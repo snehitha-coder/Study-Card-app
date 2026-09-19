@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'models/flashcard.dart';
+import 'add_card_page.dart';
 
 void main() {
   runApp(const StudyCardApp());
@@ -33,7 +34,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // Flashcard data
   List<Flashcard> cards = [
     Flashcard(
       question: 'What is Flutter?',
@@ -124,8 +124,24 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+
+                  final newCard = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddCardPage(),
+                    ),
+                  );
+
+                  if (newCard != null) {
+                    setState(() {
+                      cards.add(newCard);
+                    });
+                  }
+                },
+
                 icon: const Icon(Icons.add),
+
                 label: const Text('Create Card'),
               ),
             ),
@@ -136,7 +152,9 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () {},
+
                 icon: const Icon(Icons.school),
+
                 label: const Text('Study Now'),
               ),
             ),

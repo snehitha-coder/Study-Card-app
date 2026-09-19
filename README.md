@@ -52,3 +52,33 @@ represented and displayed in the application.
 This screenshot shows the Study Card home screen after introducing
 the Flashcard data model. The application displays the number of
 available flashcards.
+
+---
+
+### Commit 4 — Implement Flashcard Creation
+
+**Commit message:** `Implement flashcard creation`
+
+**Description:**  
+Implemented the flashcard creation feature in the Study Card application.
+Users can now enter a question and answer and save the flashcard.
+
+A separate Create Flashcard screen was added with input fields for:
+
+- Question
+- Answer
+- Save Card button
+
+After saving a flashcard, the user is returned to the home screen and
+the flashcard count is updated.
+
+#### Screenshot
+
+![Create Flashcard Screen](screenshots/commit-4.2.jpg)
+
+**Screenshot explanation:**  
+This screenshot shows the Create Flashcard screen of the Study Card
+application. The user can enter a question and its corresponding answer
+and save the new flashcard using the Save Card button.
+
+---
