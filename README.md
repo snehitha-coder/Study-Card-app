@@ -1,16 +1,34 @@
-# studycardapp
+# Study Card App
 
-A new Flutter project.
+A Flutter-based study and flashcard application designed to help students
+create, manage, and revise study cards.
 
-## Getting Started
+## Development Progress
 
-This project is a starting point for a Flutter application.
+### Commit 1 — Initial Flutter Project Setup
 
-A few resources to get you started if this is your first Flutter project:
+**Commit message:** `Initial Flutter project setup`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Description:**  
+Created the Flutter project and initialized the basic project structure
+required for developing the Study Card application.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+### Commit 2 — Create Study Card Home Screen
+
+**Commit message:** `Create study card home screen`
+
+**Description:**  
+Designed the initial home screen of the Study Card application. The screen
+contains the application title, study introduction, progress section, and
+buttons for creating cards and starting a study session.
+
+#### Screenshot
+
+![Study Card Home Screen](screenshots/commit-2.png)
+
+**Screenshot explanation:**  
+This screenshot shows the initial Study Card home screen developed in
+Commit 2. It displays the study introduction, current progress information,
+and the main actions available to the user: Create Card and Study Now.
