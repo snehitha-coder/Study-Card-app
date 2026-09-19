@@ -32,3 +32,23 @@ buttons for creating cards and starting a study session.
 This screenshot shows the initial Study Card home screen developed in
 Commit 2. It displays the study introduction, current progress information,
 and the main actions available to the user: Create Card and Study Now.
+
+---
+
+### Commit 3 — Add Flashcard Data Model
+
+**Commit message:** `Add flashcard data model`
+
+**Description:**  
+Created a Flashcard data model containing question and answer fields.
+Sample flashcards were added to demonstrate how flashcard data is
+represented and displayed in the application.
+
+#### Screenshot
+
+![Flashcard Data Model](screenshots/commit-3.jpg)
+
+**Screenshot explanation:**  
+This screenshot shows the Study Card home screen after introducing
+the Flashcard data model. The application displays the number of
+available flashcards.

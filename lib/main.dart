@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/flashcard.dart';
 
 void main() {
   runApp(const StudyCardApp());
@@ -23,8 +24,26 @@ class StudyCardApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  // Flashcard data
+  List<Flashcard> cards = [
+    Flashcard(
+      question: 'What is Flutter?',
+      answer: 'A UI framework by Google.',
+    ),
+    Flashcard(
+      question: 'What is Dart?',
+      answer: 'The programming language used by Flutter.',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +87,9 @@ class HomePage extends StatelessWidget {
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
+                  children: [
+
+                    const Text(
                       'Your Progress',
                       style: TextStyle(
                         fontSize: 20,
@@ -77,18 +97,22 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
 
                     Text(
-                      'Cards Studied: 0',
-                      style: TextStyle(fontSize: 16),
+                      'Flashcards: ${cards.length}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
 
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
-                    Text(
+                    const Text(
                       'Accuracy: 0%',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                   ],
                 ),
