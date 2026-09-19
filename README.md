@@ -82,3 +82,34 @@ application. The user can enter a question and its corresponding answer
 and save the new flashcard using the Save Card button.
 
 ---
+
+---
+
+### Commit 5 — Implement Flashcard Study Mode
+
+**Commit message:** `Implement flashcard study mode`
+
+**Description:**  
+Implemented a Study Mode feature for the Study Card application.
+
+Users can now:
+
+- View the current flashcard question
+- Tap the flashcard to reveal the answer
+- Move to the next flashcard
+- See the current flashcard number
+
+The Study Now button on the home screen opens the Study Mode screen.
+
+#### Screenshot
+
+![Study Mode](screenshots/commit-5.1.png)
+![Study Mode](screenshots/commit-5.2.png)
+
+**Screenshot explanation:**  
+This screenshot shows the Study Mode screen of the Study Card application.
+The current flashcard question is displayed along with the card number.
+The user can tap the card to reveal the answer and use the Next Card button
+to continue studying.
+
+---
