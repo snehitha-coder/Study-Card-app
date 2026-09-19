@@ -26,7 +26,7 @@ buttons for creating cards and starting a study session.
 
 #### Screenshot
 
-![Study Card Home Screen](screenshots/commit-2.png)
+![Study Card Home Screen](screenshots/commit-2.jpg)
 
 **Screenshot explanation:**  
 This screenshot shows the initial Study Card home screen developed in
