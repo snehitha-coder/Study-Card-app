@@ -103,8 +103,8 @@ The Study Now button on the home screen opens the Study Mode screen.
 
 #### Screenshot
 
-![Study Mode](screenshots/commit-5.1.png)
-![Study Mode](screenshots/commit-5.2.png)
+![Study Mode](screenshots/commit-5.1.jpg)
+![Study Mode](screenshots/commit-5.2.jpg)
 
 **Screenshot explanation:**  
 This screenshot shows the Study Mode screen of the Study Card application.
