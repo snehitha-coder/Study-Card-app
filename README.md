@@ -142,3 +142,39 @@ Features:
 ![Study Progress](screenshots/commit-6.jpg)
 
 ---
+
+### Commit 7 — Create Reusable Study Card Widgets
+
+**Commit message:** `Create reusable study card widgets`
+
+**Description:**
+
+Created a custom reusable Flutter widget to display flashcard study progress. Extracted the progress UI from `main.dart` into a separate widget to improve code organization and reusability.
+
+**Features:**
+
+- Created a reusable `ProgressCard` widget.
+- Displays the total number of flashcards.
+- Shows the number of studied cards.
+- Displays a dynamic progress bar.
+- Shows study progress as a percentage.
+- Displays progress messages based on study activity.
+
+**Dart and Flutter Concepts Used:**
+
+- Custom widgets
+- StatelessWidget
+- Constructor parameters
+- Required properties
+- Widget reusability
+- Component-based UI design
+
+**Files Created:**
+
+- `lib/widgets/progress_card.dart`
+
+**Files Modified:**
+
+- `lib/main.dart`
+
+---

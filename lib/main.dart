@@ -4,6 +4,7 @@ import 'models/flashcard.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
 import 'utils/flashcard_utils.dart';
+import 'widgets/progress_card.dart';
 
 void main() {
   runApp(const StudyCardApp());
@@ -104,49 +105,12 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 30),
 
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    const Text(
-                      'Your Progress',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    Text('Flashcards: $total'),
-
-                    const SizedBox(height: 8),
-
-                    Text('Studied: $studied / $total'),
-
-                    const SizedBox(height: 12),
-
-                    LinearProgressIndicator(
-                      value: progress,
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    Text(
-                      'Progress: ${(progress * 100).round()}%',
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    Text(message),
-                  ],
-                ),
+            ProgressCard(
+              total: total,
+              studied: studied,
+              progress: progress,
+              message: message,
               ),
-            ),
 
             const SizedBox(height: 30),
 
