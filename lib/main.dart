@@ -37,7 +37,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   List<Flashcard> cards = [
     Flashcard(
       question: 'What is Flutter?',
@@ -49,10 +48,8 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  // Store indexes of studied cards
   Set<int> studiedIndexes = {};
 
-  // Mark a card as studied
   void markCardStudied(int index) {
     setState(() {
       studiedIndexes.add(index);
@@ -61,7 +58,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final total = FlashcardUtils.getTotalCards(cards);
 
     final studied =
@@ -85,15 +81,24 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const SizedBox(height: 20),
 
-            const Text(
-              'Study Smarter',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
+            // Row layout for heading
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Study Smarter',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const CircleAvatar(
+                  child: Icon(Icons.school),
+                ),
+              ],
             ),
 
             const SizedBox(height: 8),
@@ -105,20 +110,21 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 30),
 
+            // Reusable progress widget
             ProgressCard(
               total: total,
               studied: studied,
               progress: progress,
               message: message,
-              ),
+            ),
 
             const SizedBox(height: 30),
 
+            // Create Card button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () async {
-
                   final newCard = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -132,7 +138,6 @@ class _HomePageState extends State<HomePage> {
                     });
                   }
                 },
-
                 icon: const Icon(Icons.add),
                 label: const Text('Create Card'),
               ),
@@ -140,11 +145,11 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 15),
 
+            // Study Now button
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () {
-
                   if (cards.isEmpty) {
                     return;
                   }
@@ -159,7 +164,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 },
-
                 icon: const Icon(Icons.school),
                 label: const Text('Study Now'),
               ),

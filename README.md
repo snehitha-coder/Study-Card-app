@@ -178,3 +178,35 @@ Created a custom reusable Flutter widget to display flashcard study progress. Ex
 - `lib/main.dart`
 
 ---
+
+---
+
+### Commit 8 — Improve Layouts Using Flutter Widgets
+
+**Commit message:** `Improve layouts using Flutter widgets`
+
+**Description:**
+
+Improved the Study Card dashboard layout using Flutter's basic layout widgets.
+
+**Features:**
+
+- Used Row to arrange the dashboard heading and school icon horizontally.
+- Used Column to organize screen elements vertically.
+- Used Stack to overlay an icon on the progress card.
+- Used Positioned to control the icon's placement.
+- Used Expanded to manage available horizontal space.
+
+**Flutter Concepts Used:**
+
+- Row
+- Column
+- Stack
+- Positioned
+- Expanded
+
+#### Screenshot
+
+![Flutter Layout Widgets](screenshots/commit-8.jpg)
+
+---
