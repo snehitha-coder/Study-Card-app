@@ -113,3 +113,32 @@ The user can tap the card to reveal the answer and use the Next Card button
 to continue studying.
 
 ---
+
+### Commit 6 — Add Dart Utility Functions
+
+**Commit message:** `Add Dart utility functions`
+
+**Description:**
+
+Implemented reusable Dart utility functions to calculate flashcard statistics and study progress.
+
+Features:
+
+- Calculate total flashcards.
+- Track the number of studied flashcards.
+- Calculate study progress percentage.
+- Generate progress messages using conditional statements.
+- Display a dynamic progress bar on the home screen.
+
+**Dart Concepts Used:**
+
+- Functions and static methods
+- Conditional statements
+- Lists and Sets
+- Return values
+
+#### Screenshot
+
+![Study Progress](screenshots/commit-6.jpg)
+
+---

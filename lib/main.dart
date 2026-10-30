@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'models/flashcard.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
+import 'utils/flashcard_utils.dart';
 
 void main() {
   runApp(const StudyCardApp());
@@ -35,7 +37,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // Flashcard data
   List<Flashcard> cards = [
     Flashcard(
       question: 'What is Flutter?',
@@ -47,8 +48,30 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
+  // Store indexes of studied cards
+  Set<int> studiedIndexes = {};
+
+  // Mark a card as studied
+  void markCardStudied(int index) {
+    setState(() {
+      studiedIndexes.add(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final total = FlashcardUtils.getTotalCards(cards);
+
+    final studied =
+        FlashcardUtils.getStudiedCards(studiedIndexes);
+
+    final progress =
+        FlashcardUtils.getProgress(total, studied);
+
+    final message =
+        FlashcardUtils.getProgressMessage(total, studied);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Study Card'),
@@ -76,9 +99,7 @@ class _HomePageState extends State<HomePage> {
 
             const Text(
               'Create flashcards and revise your subjects easily.',
-              style: TextStyle(
-                fontSize: 16,
-              ),
+              style: TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 30),
@@ -101,21 +122,27 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: 15),
 
+                    Text('Flashcards: $total'),
+
+                    const SizedBox(height: 8),
+
+                    Text('Studied: $studied / $total'),
+
+                    const SizedBox(height: 12),
+
+                    LinearProgressIndicator(
+                      value: progress,
+                    ),
+
+                    const SizedBox(height: 10),
+
                     Text(
-                      'Flashcards: ${cards.length}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                      'Progress: ${(progress * 100).round()}%',
                     ),
 
                     const SizedBox(height: 8),
 
-                    const Text(
-                      'Accuracy: 0%',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    Text(message),
                   ],
                 ),
               ),
@@ -123,7 +150,6 @@ class _HomePageState extends State<HomePage> {
 
             const SizedBox(height: 30),
 
-            // Create Card button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -144,14 +170,12 @@ class _HomePageState extends State<HomePage> {
                 },
 
                 icon: const Icon(Icons.add),
-
                 label: const Text('Create Card'),
               ),
             ),
 
             const SizedBox(height: 15),
 
-            // Study Now button
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -166,13 +190,13 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                       builder: (context) => StudyPage(
                         cards: cards,
+                        onCardStudied: markCardStudied,
                       ),
                     ),
                   );
                 },
 
                 icon: const Icon(Icons.school),
-
                 label: const Text('Study Now'),
               ),
             ),

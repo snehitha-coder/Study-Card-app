@@ -1,12 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'models/flashcard.dart';
 
 class StudyPage extends StatefulWidget {
   final List<Flashcard> cards;
+  final Function(int) onCardStudied;
 
   const StudyPage({
     super.key,
     required this.cards,
+    required this.onCardStudied,
   });
 
   @override
@@ -22,6 +25,16 @@ class _StudyPageState extends State<StudyPage> {
       currentIndex =
           (currentIndex + 1) % widget.cards.length;
       showAnswer = false;
+    });
+  }
+
+  void flipCard() {
+    if (!showAnswer) {
+      widget.onCardStudied(currentIndex);
+    }
+
+    setState(() {
+      showAnswer = !showAnswer;
     });
   }
 
@@ -44,19 +57,13 @@ class _StudyPageState extends State<StudyPage> {
 
             Text(
               'Card ${currentIndex + 1} of ${widget.cards.length}',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 25),
 
             GestureDetector(
-              onTap: () {
-                setState(() {
-                  showAnswer = !showAnswer;
-                });
-              },
+              onTap: flipCard,
 
               child: Card(
                 elevation: 4,
@@ -69,9 +76,7 @@ class _StudyPageState extends State<StudyPage> {
                     children: [
 
                       Text(
-                        showAnswer
-                            ? 'Answer'
-                            : 'Question',
+                        showAnswer ? 'Answer' : 'Question',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -85,18 +90,14 @@ class _StudyPageState extends State<StudyPage> {
                             ? card.answer
                             : card.question,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 22,
-                        ),
+                        style: const TextStyle(fontSize: 22),
                       ),
 
                       const SizedBox(height: 20),
 
                       const Text(
                         'Tap card to flip',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(fontSize: 14),
                       ),
                     ],
                   ),
@@ -112,9 +113,7 @@ class _StudyPageState extends State<StudyPage> {
               child: ElevatedButton(
                 onPressed: nextCard,
 
-                child: const Text(
-                  'Next Card',
-                ),
+                child: const Text('Next Card'),
               ),
             ),
           ],
