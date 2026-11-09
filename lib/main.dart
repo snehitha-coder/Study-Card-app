@@ -10,6 +10,17 @@ void main() {
   runApp(const StudyCardApp());
 }
 
+// Arguments passed to the Study Page
+class StudyRouteArguments {
+  final List<Flashcard> cards;
+  final Function(int) onCardStudied;
+
+  StudyRouteArguments({
+    required this.cards,
+    required this.onCardStudied,
+  });
+}
+
 class StudyCardApp extends StatelessWidget {
   const StudyCardApp({super.key});
 
@@ -18,13 +29,32 @@ class StudyCardApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Study Card',
+
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
         ),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+
+      // Named application routes
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+
+        '/add-card': (context) => const AddCardPage(),
+
+        '/study': (context) {
+          final args = ModalRoute.of(context)!
+              .settings
+              .arguments as StudyRouteArguments;
+
+          return StudyPage(
+            cards: args.cards,
+            onCardStudied: args.onCardStudied,
+          );
+        },
+      },
     );
   }
 }
@@ -83,7 +113,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
 
-      // Responsive dashboard using LayoutBuilder and MediaQuery
+      // Responsive dashboard
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -124,12 +154,9 @@ class _HomePageState extends State<HomePage> {
 
                       const SizedBox(height: 8),
 
-                      // Dashboard description
-                      Text(
+                      const Text(
                         'Create flashcards and revise your subjects easily.',
-                        style: TextStyle(
-                          fontSize: isTablet ? 18 : 16,
-                        ),
+                        style: TextStyle(fontSize: 16),
                       ),
 
                       SizedBox(height: isTablet ? 40 : 30),
@@ -144,17 +171,15 @@ class _HomePageState extends State<HomePage> {
 
                       SizedBox(height: isTablet ? 40 : 30),
 
-                      // Create Card button
+                      // Create Card using named route
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () async {
-                            final newCard = await Navigator.push(
+                            final newCard =
+                                await Navigator.pushNamed<Flashcard>(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const AddCardPage(),
-                              ),
+                              '/add-card',
                             );
 
                             if (newCard != null) {
@@ -170,7 +195,7 @@ class _HomePageState extends State<HomePage> {
 
                       const SizedBox(height: 15),
 
-                      // Study Now button
+                      // Study Now using named route
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton.icon(
@@ -179,13 +204,12 @@ class _HomePageState extends State<HomePage> {
                               return;
                             }
 
-                            Navigator.push(
+                            Navigator.pushNamed(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => StudyPage(
-                                  cards: cards,
-                                  onCardStudied: markCardStudied,
-                                ),
+                              '/study',
+                              arguments: StudyRouteArguments(
+                                cards: cards,
+                                onCardStudied: markCardStudied,
                               ),
                             );
                           },
