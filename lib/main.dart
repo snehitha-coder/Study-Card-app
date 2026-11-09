@@ -75,101 +75,124 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      // Responsive dashboard layout
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen =
+              constraints.maxWidth > 600;
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
+          return SingleChildScrollView(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 800,
+                ),
 
-            // Row layout for heading
-            Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    'Study Smarter',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: Padding(
+                  padding: EdgeInsets.all(
+                    isWideScreen ? 32 : 20,
+                  ),
+
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+
+                      // Dashboard heading
+                      Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Study Smarter',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const CircleAvatar(
+                            child: Icon(Icons.school),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      const Text(
+                        'Create flashcards and revise your subjects easily.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Progress widget
+                      ProgressCard(
+                        total: total,
+                        studied: studied,
+                        progress: progress,
+                        message: message,
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Create Card button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            final newCard =
+                                await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddCardPage(),
+                              ),
+                            );
+
+                            if (newCard != null) {
+                              setState(() {
+                                cards.add(newCard);
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text('Create Card'),
+                        ),
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      // Study Now button
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            if (cards.isEmpty) {
+                              return;
+                            }
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StudyPage(
+                                  cards: cards,
+                                  onCardStudied: markCardStudied,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.school),
+                          label: const Text('Study Now'),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const CircleAvatar(
-                  child: Icon(Icons.school),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 8),
-
-            const Text(
-              'Create flashcards and revise your subjects easily.',
-              style: TextStyle(fontSize: 16),
-            ),
-
-            const SizedBox(height: 30),
-
-            // Reusable progress widget
-            ProgressCard(
-              total: total,
-              studied: studied,
-              progress: progress,
-              message: message,
-            ),
-
-            const SizedBox(height: 30),
-
-            // Create Card button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  final newCard = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddCardPage(),
-                    ),
-                  );
-
-                  if (newCard != null) {
-                    setState(() {
-                      cards.add(newCard);
-                    });
-                  }
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Create Card'),
               ),
             ),
-
-            const SizedBox(height: 15),
-
-            // Study Now button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  if (cards.isEmpty) {
-                    return;
-                  }
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StudyPage(
-                        cards: cards,
-                        onCardStudied: markCardStudied,
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.school),
-                label: const Text('Study Now'),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
