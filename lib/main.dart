@@ -69,62 +69,70 @@ class _HomePageState extends State<HomePage> {
     final message =
         FlashcardUtils.getProgressMessage(total, studied);
 
+    // Get screen dimensions using MediaQuery
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Define screen breakpoints
+    final isTablet = screenWidth >= 600;
+    final isLargeScreen = screenWidth >= 900;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Study Card'),
         centerTitle: true,
       ),
 
-      // Responsive dashboard layout
+      // Responsive dashboard using LayoutBuilder and MediaQuery
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final isWideScreen =
-              constraints.maxWidth > 600;
-
           return SingleChildScrollView(
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 800,
+                constraints: BoxConstraints(
+                  maxWidth: isLargeScreen ? 900 : 800,
                 ),
-
                 child: Padding(
                   padding: EdgeInsets.all(
-                    isWideScreen ? 32 : 20,
+                    isTablet ? 32 : 20,
                   ),
-
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: screenHeight < 600 ? 10 : 20,
+                      ),
 
                       // Dashboard heading
                       Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               'Study Smarter',
                               style: TextStyle(
-                                fontSize: 30,
+                                fontSize: isTablet ? 36 : 30,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          const CircleAvatar(
-                            child: Icon(Icons.school),
+                          CircleAvatar(
+                            radius: isTablet ? 28 : 24,
+                            child: const Icon(Icons.school),
                           ),
                         ],
                       ),
 
                       const SizedBox(height: 8),
 
-                      const Text(
+                      // Dashboard description
+                      Text(
                         'Create flashcards and revise your subjects easily.',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: isTablet ? 18 : 16,
+                        ),
                       ),
 
-                      const SizedBox(height: 30),
+                      SizedBox(height: isTablet ? 40 : 30),
 
                       // Progress widget
                       ProgressCard(
@@ -134,15 +142,14 @@ class _HomePageState extends State<HomePage> {
                         message: message,
                       ),
 
-                      const SizedBox(height: 30),
+                      SizedBox(height: isTablet ? 40 : 30),
 
                       // Create Card button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () async {
-                            final newCard =
-                                await Navigator.push(
+                            final newCard = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
