@@ -10,10 +10,12 @@ class AddCardPage extends StatefulWidget {
 }
 
 class _AddCardPageState extends State<AddCardPage> {
-  final questionController = TextEditingController();
-  final answerController = TextEditingController();
+  final TextEditingController questionController =
+      TextEditingController();
 
-  // Dispose controllers when the page is closed
+  final TextEditingController answerController =
+      TextEditingController();
+
   @override
   void dispose() {
     questionController.dispose();
@@ -21,7 +23,6 @@ class _AddCardPageState extends State<AddCardPage> {
     super.dispose();
   }
 
-  // Create a flashcard and return it to the previous screen
   void saveCard() {
     final question = questionController.text.trim();
     final answer = answerController.text.trim();
@@ -35,12 +36,12 @@ class _AddCardPageState extends State<AddCardPage> {
       return;
     }
 
-    final card = Flashcard(
+    final Flashcard newCard = Flashcard(
       question: question,
       answer: answer,
     );
 
-    Navigator.pop(context, card);
+    Navigator.pop<Flashcard>(context, newCard);
   }
 
   @override
@@ -48,36 +49,64 @@ class _AddCardPageState extends State<AddCardPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Flashcard'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
-
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Create a New Card',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            const Text(
+              'Question',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
+
             TextField(
               controller: questionController,
-              decoration: const InputDecoration(
-                labelText: 'Question',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.help_outline),
+              decoration: InputDecoration(
+                hintText: 'Enter your question',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                prefixIcon: const Icon(Icons.help_outline),
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
+
+            const Text(
+              'Answer',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
 
             TextField(
               controller: answerController,
-              decoration: const InputDecoration(
-                labelText: 'Answer',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lightbulb_outline),
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: 'Enter your answer',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                prefixIcon: const Icon(Icons.lightbulb_outline),
+                alignLabelWithHint: true,
               ),
             ),
 
@@ -89,6 +118,11 @@ class _AddCardPageState extends State<AddCardPage> {
                 onPressed: saveCard,
                 icon: const Icon(Icons.save),
                 label: const Text('Save Card'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                ),
               ),
             ),
           ],

@@ -1,26 +1,25 @@
+
 import 'package:flutter/material.dart';
 import '../models/flashcard.dart';
 
 class FlashcardProvider extends ChangeNotifier {
-  // Store all flashcards
   final List<Flashcard> _cards = [
     Flashcard(
       question: 'What is Flutter?',
-      answer: 'A UI framework by Google.',
+      answer: 'Flutter is a UI framework developed by Google.',
     ),
     Flashcard(
       question: 'What is Dart?',
-      answer: 'The programming language used by Flutter.',
+      answer: 'Dart is the programming language used by Flutter.',
     ),
   ];
 
-  // Store studied card indexes
   final Set<int> _studiedIndexes = {};
 
-  // Access flashcards
+  // Get all flashcards
   List<Flashcard> get cards => _cards;
 
-  // Access studied indexes
+  // Get studied card indexes
   Set<int> get studiedIndexes => _studiedIndexes;
 
   // Add a new flashcard

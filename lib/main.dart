@@ -1,16 +1,17 @@
 
 import 'package:flutter/material.dart';
+
 import 'models/flashcard.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
-import 'utils/flashcard_utils.dart';
 import 'widgets/progress_card.dart';
+import 'utils/flashcard_utils.dart';
 
 void main() {
   runApp(const StudyCardApp());
 }
 
-// Arguments passed to the Study Page
+// Arguments passed to the Study page
 class StudyRouteArguments {
   final List<Flashcard> cards;
   final Function(int) onCardStudied;
@@ -28,26 +29,22 @@ class StudyCardApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Study Card',
-
+      title: 'StudyCard',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.indigo,
-        ),
-        useMaterial3: true,
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: const Color(0xFFF7F5FC),
       ),
-
-      // Named application routes
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
 
+        // Return the page widget directly.
         '/add-card': (context) => const AddCardPage(),
 
         '/study': (context) {
-          final args = ModalRoute.of(context)!
-              .settings
-              .arguments as StudyRouteArguments;
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as StudyRouteArguments;
 
           return StudyPage(
             cards: args.cards,
@@ -67,18 +64,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Flashcard> cards = [
+  final List<Flashcard> cards = [
     Flashcard(
       question: 'What is Flutter?',
-      answer: 'A UI framework by Google.',
+      answer: 'Flutter is a UI framework developed by Google.',
     ),
     Flashcard(
       question: 'What is Dart?',
-      answer: 'The programming language used by Flutter.',
+      answer: 'Dart is the programming language used by Flutter.',
     ),
   ];
 
-  Set<int> studiedIndexes = {};
+  final Set<int> studiedIndexes = {};
 
   void markCardStudied(int index) {
     setState(() {
@@ -86,144 +83,201 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // Navigate to Add Card page and receive the new card.
+  
+Future<void> openAddCardPage() async {
+  final result = await Navigator.pushNamed(
+    context,
+    '/add-card',
+  );
+
+  if (!mounted) return;
+
+  if (result is Flashcard) {
+    setState(() {
+      cards.add(result);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Flashcard added successfully!'),
+      ),
+    );
+  }
+}
+
+
+  // Navigate to Study page.
+  void openStudyPage() {
+    if (cards.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please add a flashcard first.'),
+        ),
+      );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      '/study',
+      arguments: StudyRouteArguments(
+        cards: cards,
+        onCardStudied: markCardStudied,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final total = FlashcardUtils.getTotalCards(cards);
+    // Calculate progress values.
+    final totalCards = FlashcardUtils.getTotalCards(cards);
 
-    final studied =
+    final studiedCards =
         FlashcardUtils.getStudiedCards(studiedIndexes);
 
     final progress =
-        FlashcardUtils.getProgress(total, studied);
+        FlashcardUtils.getProgress(totalCards, studiedCards);
 
     final message =
-        FlashcardUtils.getProgressMessage(total, studied);
+        FlashcardUtils.getProgressMessage(totalCards, studiedCards);
 
-    // Get screen dimensions using MediaQuery
+    // Responsive screen configuration.
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
 
-    // Define screen breakpoints
-    final isTablet = screenWidth >= 600;
-    final isLargeScreen = screenWidth >= 900;
+    double horizontalPadding = 20;
+
+    if (screenWidth > 900) {
+      horizontalPadding = 100;
+    } else if (screenWidth > 600) {
+      horizontalPadding = 50;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Study Card'),
-        centerTitle: true,
+        title: const Text(
+          'StudyCard',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        elevation: 0,
       ),
-
-      // Responsive dashboard
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: isLargeScreen ? 900 : 800,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(
-                    isTablet ? 32 : 20,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: screenHeight < 600 ? 10 : 20,
-                      ),
-
-                      // Dashboard heading
-                      Row(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 900,
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(horizontalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Dashboard heading
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Text(
-                              'Study Smarter',
-                              style: TextStyle(
-                                fontSize: isTablet ? 36 : 30,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Text(
+                            'Hello, Student!',
+                            style: TextStyle(
+                              fontSize: screenWidth > 600 ? 30 : 25,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          CircleAvatar(
-                            radius: isTablet ? 28 : 24,
-                            child: const Icon(Icons.school),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Ready to learn something new?',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
-
-                      const SizedBox(height: 8),
-
-                      const Text(
-                        'Create flashcards and revise your subjects easily.',
-                        style: TextStyle(fontSize: 16),
+                    ),
+                    CircleAvatar(
+                      radius: screenWidth > 600 ? 30 : 24,
+                      backgroundColor: Colors.deepPurple.shade100,
+                      child: const Icon(
+                        Icons.school,
+                        color: Colors.deepPurple,
                       ),
+                    ),
+                  ],
+                ),
 
-                      SizedBox(height: isTablet ? 40 : 30),
+                const SizedBox(height: 30),
 
-                      // Progress widget
-                      ProgressCard(
-                        total: total,
-                        studied: studied,
-                        progress: progress,
-                        message: message,
-                      ),
+                // Progress Card
+                ProgressCard(
+                  total: totalCards,
+                  studied: studiedCards,
+                  progress: progress,
+                  message: message,
+                ),
 
-                      SizedBox(height: isTablet ? 40 : 30),
+                const SizedBox(height: 30),
 
-                      // Create Card using named route
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            final newCard =
-                                await Navigator.pushNamed<Flashcard>(
-                              context,
-                              '/add-card',
-                            );
-
-                            if (newCard != null) {
-                              setState(() {
-                                cards.add(newCard);
-                              });
-                            }
-                          },
-                          icon: const Icon(Icons.add),
-                          label: const Text('Create Card'),
-                        ),
-                      ),
-
-                      const SizedBox(height: 15),
-
-                      // Study Now using named route
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            if (cards.isEmpty) {
-                              return;
-                            }
-
-                            Navigator.pushNamed(
-                              context,
-                              '/study',
-                              arguments: StudyRouteArguments(
-                                cards: cards,
-                                onCardStudied: markCardStudied,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.school),
-                          label: const Text('Study Now'),
-                        ),
-                      ),
-                    ],
+                const Text(
+                  'Your Learning Space',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+
+                const SizedBox(height: 15),
+
+                // Create Card button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: openAddCardPage,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Create Card'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.all(16),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Study Now button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: openStudyPage,
+                    icon: const Icon(Icons.menu_book),
+                    label: const Text('Study Now'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.deepPurple,
+                      padding: const EdgeInsets.all(16),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                Text(
+                  'Total Flashcards: ${cards.length}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
