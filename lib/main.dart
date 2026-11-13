@@ -22,15 +22,25 @@ class StudyCardApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'StudyCard',
-      theme: AppTheme.lightTheme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(),
-        '/add-card': (context) => const AddCardPage(),
-        '/study': (context) => const StudyPage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: AppTheme.themeMode,
+      builder: (context, currentTheme, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'StudyCard',
+
+          // Light and dark themes
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: currentTheme,
+
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const HomePage(),
+            '/add-card': (context) => const AddCardPage(),
+            '/study': (context) => const StudyPage(),
+          },
+        );
       },
     );
   }
@@ -68,13 +78,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<FlashcardProvider>();
 
-    // Global progress information
     final totalCards = provider.totalCards;
     final studiedCards = provider.studiedCards;
     final remainingCards = provider.remainingCards;
     final progress = provider.progress;
 
-    // Responsive screen configuration
+    // Responsive layout
     final screenWidth = MediaQuery.of(context).size.width;
 
     double horizontalPadding = 20;
@@ -98,7 +107,23 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('StudyCard'),
+
+        // Theme switching button
+        actions: [
+          IconButton(
+            tooltip: AppTheme.themeMode.value == ThemeMode.light
+                ? 'Switch to Dark Mode'
+                : 'Switch to Light Mode',
+            onPressed: AppTheme.toggleTheme,
+            icon: Icon(
+              AppTheme.themeMode.value == ThemeMode.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+          ),
+        ],
       ),
+
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -173,7 +198,7 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                // Create flashcard button
+                // Create flashcard
                 ElevatedButton.icon(
                   onPressed: () => openAddCardPage(context),
                   icon: const Icon(Icons.add),
