@@ -26,6 +26,11 @@ class _AddCardPageState extends State<AddCardPage> {
     super.dispose();
   }
 
+  void clearForm() {
+    questionController.clear();
+    answerController.clear();
+  }
+
   void saveCard() {
     final question = questionController.text.trim();
     final answer = answerController.text.trim();
@@ -39,15 +44,13 @@ class _AddCardPageState extends State<AddCardPage> {
       return;
     }
 
-    final Flashcard newCard = Flashcard(
+    final newCard = Flashcard(
       question: question,
       answer: answer,
     );
 
-    // Add the card to shared Provider state.
     context.read<FlashcardProvider>().addCard(newCard);
 
-    // Return to the dashboard.
     Navigator.pop(context, true);
   }
 
@@ -56,83 +59,87 @@ class _AddCardPageState extends State<AddCardPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Flashcard'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Create a New Card',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 25),
 
-            const Text(
-              'Question',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            TextField(
-              controller: questionController,
-              decoration: InputDecoration(
-                hintText: 'Enter your question',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 650),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Icon(
+                  Icons.library_add,
+                  size: 55,
+                  color: Colors.deepPurple,
                 ),
-                prefixIcon: const Icon(Icons.help_outline),
-              ),
-            ),
 
-            const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
-            const Text(
-              'Answer',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            TextField(
-              controller: answerController,
-              maxLines: 4,
-              decoration: InputDecoration(
-                hintText: 'Enter your answer',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                const Text(
+                  'Create a New Card',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                prefixIcon: const Icon(Icons.lightbulb_outline),
-                alignLabelWithHint: true,
-              ),
-            ),
 
-            const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: saveCard,
-                icon: const Icon(Icons.save),
-                label: const Text('Save Card'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.all(16),
+                // Question field
+                TextField(
+                  controller: questionController,
+                  maxLength: 150,
+                  decoration: InputDecoration(
+                    labelText: 'Question',
+                    hintText: 'Enter your question',
+                    prefixIcon: const Icon(Icons.help_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-              ),
+
+                const SizedBox(height: 20),
+
+                // Answer field
+                TextField(
+                  controller: answerController,
+                  maxLength: 500,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: 'Answer',
+                    hintText: 'Enter your answer',
+                    alignLabelWithHint: true,
+                    prefixIcon: const Icon(Icons.lightbulb_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Save button
+                ElevatedButton.icon(
+                  onPressed: saveCard,
+                  icon: const Icon(Icons.save),
+                  label: const Text('Save Flashcard'),
+                ),
+
+                const SizedBox(height: 12),
+
+                // Clear button
+                OutlinedButton.icon(
+                  onPressed: clearForm,
+                  icon: const Icon(Icons.clear),
+                  label: const Text('Clear Form'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
