@@ -1,16 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'models/flashcard.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/flashcard_provider.dart';
 
 class StudyPage extends StatefulWidget {
-  final List<Flashcard> cards;
-  final Function(int) onCardStudied;
-
-  const StudyPage({
-    super.key,
-    required this.cards,
-    required this.onCardStudied,
-  });
+  const StudyPage({super.key});
 
   @override
   State<StudyPage> createState() => _StudyPageState();
@@ -20,21 +15,22 @@ class _StudyPageState extends State<StudyPage> {
   int currentIndex = 0;
   bool showAnswer = false;
 
-  // Move to the next flashcard
-  void nextCard() {
-    if (widget.cards.isEmpty) return;
+  // Move to the next flashcard.
+  void nextCard(int totalCards) {
+    if (totalCards == 0) return;
 
     setState(() {
-      currentIndex =
-          (currentIndex + 1) % widget.cards.length;
+      currentIndex = (currentIndex + 1) % totalCards;
       showAnswer = false;
     });
   }
 
-  // Flip the flashcard
+  // Flip the flashcard.
   void flipCard() {
     if (!showAnswer) {
-      widget.onCardStudied(currentIndex);
+      context
+          .read<FlashcardProvider>()
+          .markCardStudied(currentIndex);
     }
 
     setState(() {
@@ -42,24 +38,29 @@ class _StudyPageState extends State<StudyPage> {
     });
   }
 
-  // Return to the dashboard
+  // Return to dashboard.
   void goBack() {
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Read shared flashcard data.
+    final provider = context.watch<FlashcardProvider>();
+    final cards = provider.cards;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Study Mode'),
         centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: goBack,
         ),
       ),
-
-      body: widget.cards.isEmpty
+      body: cards.isEmpty
           ? const Center(
               child: Text('No flashcards available.'),
             )
@@ -68,9 +69,9 @@ class _StudyPageState extends State<StudyPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Card number
+                  // Card number.
                   Text(
-                    'Card ${currentIndex + 1} of ${widget.cards.length}',
+                    'Card ${currentIndex + 1} of ${cards.length}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -79,7 +80,7 @@ class _StudyPageState extends State<StudyPage> {
 
                   const SizedBox(height: 25),
 
-                  // Flashcard
+                  // Flashcard.
                   GestureDetector(
                     onTap: flipCard,
                     child: Card(
@@ -112,8 +113,8 @@ class _StudyPageState extends State<StudyPage> {
 
                             Text(
                               showAnswer
-                                  ? widget.cards[currentIndex].answer
-                                  : widget.cards[currentIndex].question,
+                                  ? cards[currentIndex].answer
+                                  : cards[currentIndex].question,
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 22),
                             ),
@@ -135,11 +136,11 @@ class _StudyPageState extends State<StudyPage> {
 
                   const SizedBox(height: 30),
 
-                  // Next Card button
+                  // Next Card button.
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: nextCard,
+                      onPressed: () => nextCard(cards.length),
                       child: const Text('Next Card'),
                     ),
                   ),

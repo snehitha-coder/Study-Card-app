@@ -1,25 +1,21 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'models/flashcard.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
 import 'widgets/progress_card.dart';
 import 'utils/flashcard_utils.dart';
+import 'providers/flashcard_provider.dart';
 
 void main() {
-  runApp(const StudyCardApp());
-}
-
-// Arguments passed to the Study page
-class StudyRouteArguments {
-  final List<Flashcard> cards;
-  final Function(int) onCardStudied;
-
-  StudyRouteArguments({
-    required this.cards,
-    required this.onCardStudied,
-  });
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FlashcardProvider(),
+      child: const StudyCardApp(),
+    ),
+  );
 }
 
 class StudyCardApp extends StatelessWidget {
@@ -37,79 +33,35 @@ class StudyCardApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
-
-        // Return the page widget directly.
         '/add-card': (context) => const AddCardPage(),
-
-        '/study': (context) {
-          final args =
-              ModalRoute.of(context)!.settings.arguments
-                  as StudyRouteArguments;
-
-          return StudyPage(
-            cards: args.cards,
-            onCardStudied: args.onCardStudied,
-          );
-        },
+        '/study': (context) => const StudyPage(),
       },
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final List<Flashcard> cards = [
-    Flashcard(
-      question: 'What is Flutter?',
-      answer: 'Flutter is a UI framework developed by Google.',
-    ),
-    Flashcard(
-      question: 'What is Dart?',
-      answer: 'Dart is the programming language used by Flutter.',
-    ),
-  ];
-
-  final Set<int> studiedIndexes = {};
-
-  void markCardStudied(int index) {
-    setState(() {
-      studiedIndexes.add(index);
-    });
-  }
-
-  // Navigate to Add Card page and receive the new card.
-  
-Future<void> openAddCardPage() async {
-  final result = await Navigator.pushNamed(
-    context,
-    '/add-card',
-  );
-
-  if (!mounted) return;
-
-  if (result is Flashcard) {
-    setState(() {
-      cards.add(result);
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Flashcard added successfully!'),
-      ),
+  Future<void> openAddCardPage(BuildContext context) async {
+    final result = await Navigator.pushNamed(
+      context,
+      '/add-card',
     );
+
+    if (!context.mounted) return;
+
+    if (result == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Flashcard added successfully!'),
+        ),
+      );
+    }
   }
-}
 
-
-  // Navigate to Study page.
-  void openStudyPage() {
-    if (cards.isEmpty) {
+  void openStudyPage(BuildContext context, int totalCards) {
+    if (totalCards == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please add a flashcard first.'),
@@ -118,19 +70,18 @@ Future<void> openAddCardPage() async {
       return;
     }
 
-    Navigator.pushNamed(
-      context,
-      '/study',
-      arguments: StudyRouteArguments(
-        cards: cards,
-        onCardStudied: markCardStudied,
-      ),
-    );
+    Navigator.pushNamed(context, '/study');
   }
 
   @override
   Widget build(BuildContext context) {
-    // Calculate progress values.
+    // Get shared flashcard data from Provider.
+    final provider = context.watch<FlashcardProvider>();
+
+    final cards = provider.cards;
+    final studiedIndexes = provider.studiedIndexes;
+
+    // Calculate progress.
     final totalCards = FlashcardUtils.getTotalCards(cards);
 
     final studiedCards =
@@ -175,7 +126,7 @@ Future<void> openAddCardPage() async {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Dashboard heading
+                // Dashboard heading.
                 Row(
                   children: [
                     Expanded(
@@ -185,7 +136,8 @@ Future<void> openAddCardPage() async {
                           Text(
                             'Hello, Student!',
                             style: TextStyle(
-                              fontSize: screenWidth > 600 ? 30 : 25,
+                              fontSize:
+                                  screenWidth > 600 ? 30 : 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -213,7 +165,7 @@ Future<void> openAddCardPage() async {
 
                 const SizedBox(height: 30),
 
-                // Progress Card
+                // Progress Card.
                 ProgressCard(
                   total: totalCards,
                   studied: studiedCards,
@@ -233,11 +185,11 @@ Future<void> openAddCardPage() async {
 
                 const SizedBox(height: 15),
 
-                // Create Card button
+                // Create Card button.
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: openAddCardPage,
+                    onPressed: () => openAddCardPage(context),
                     icon: const Icon(Icons.add),
                     label: const Text('Create Card'),
                     style: ElevatedButton.styleFrom(
@@ -250,11 +202,12 @@ Future<void> openAddCardPage() async {
 
                 const SizedBox(height: 15),
 
-                // Study Now button
+                // Study Now button.
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: openStudyPage,
+                    onPressed: () =>
+                        openStudyPage(context, totalCards),
                     icon: const Icon(Icons.menu_book),
                     label: const Text('Study Now'),
                     style: ElevatedButton.styleFrom(

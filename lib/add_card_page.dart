@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'models/flashcard.dart';
+import 'providers/flashcard_provider.dart';
 
 class AddCardPage extends StatefulWidget {
   const AddCardPage({super.key});
@@ -41,7 +44,11 @@ class _AddCardPageState extends State<AddCardPage> {
       answer: answer,
     );
 
-    Navigator.pop<Flashcard>(context, newCard);
+    // Add the card to shared Provider state.
+    context.read<FlashcardProvider>().addCard(newCard);
+
+    // Return to the dashboard.
+    Navigator.pop(context, true);
   }
 
   @override
