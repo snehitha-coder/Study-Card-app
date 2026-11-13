@@ -6,6 +6,7 @@ import 'providers/flashcard_provider.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
 import 'widgets/progress_card.dart';
+import 'utils/app_theme.dart';
 
 void main() {
   runApp(
@@ -24,10 +25,7 @@ class StudyCardApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'StudyCard',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.grey[100],
-      ),
+      theme: AppTheme.lightTheme,
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
@@ -70,13 +68,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<FlashcardProvider>();
 
-    // Get progress information from Provider.
+    // Global progress information
     final totalCards = provider.totalCards;
     final studiedCards = provider.studiedCards;
     final remainingCards = provider.remainingCards;
     final progress = provider.progress;
 
-    // Responsive screen configuration.
+    // Responsive screen configuration
     final screenWidth = MediaQuery.of(context).size.width;
 
     double horizontalPadding = 20;
@@ -100,11 +98,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('StudyCard'),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
       ),
-
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -135,7 +129,7 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // Progress card.
+                // Progress card
                 ProgressCard(
                   total: totalCards,
                   studied: studiedCards,
@@ -145,16 +139,14 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // Remaining cards.
+                // Remaining cards
                 Card(
-                  elevation: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
                         const Icon(
                           Icons.pending_actions,
-                          color: Colors.deepPurple,
                           size: 30,
                         ),
                         const SizedBox(width: 15),
@@ -172,7 +164,6 @@ class HomePage extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
                           ),
                         ),
                       ],
@@ -182,31 +173,21 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(height: 25),
 
-                // Create Card button.
+                // Create flashcard button
                 ElevatedButton.icon(
                   onPressed: () => openAddCardPage(context),
                   icon: const Icon(Icons.add),
                   label: const Text('Create Flashcard'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.all(16),
-                  ),
                 ),
 
                 const SizedBox(height: 15),
 
-                // Study Now button.
+                // Study button
                 ElevatedButton.icon(
                   onPressed: () =>
                       openStudyPage(context, totalCards),
                   icon: const Icon(Icons.school),
                   label: const Text('Study Now'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.all(16),
-                  ),
                 ),
               ],
             ),
