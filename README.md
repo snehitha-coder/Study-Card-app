@@ -207,4 +207,4 @@ Improved the Study Card dashboard layout using Flutter's basic layout widgets.
 
 #### Screenshot
 
-!(screenshots/commit-8.jpg)
+![!!](screenshots/commit-8.jpg)
