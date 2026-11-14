@@ -48,17 +48,31 @@ class _ResourcesPageState extends State<ResourcesPage> {
 
           final resources = snapshot.data!;
 
-          return SingleChildScrollView(
+          return ListView.builder(
             padding: const EdgeInsets.all(16),
-            child: SelectableText(
-              'Total Resources: ${resources.length}\n\n' +
-              resources.map((resource) {
-                return 'ID: ${resource.id}\n'
-                    'User ID: ${resource.userId}\n'
-                    'Title: ${resource.title}\n'
-                    'Body: ${resource.body}';
-              }).join('\n\n-------------------\n\n'),
-            ),
+            itemCount: resources.length,
+            itemBuilder: (context, index) {
+              final resource = resources[index];
+
+              return Card(
+                margin: const EdgeInsets.only(bottom: 12),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Text('${resource.id}'),
+                  ),
+                  title: Text(
+                    resource.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(resource.body),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
