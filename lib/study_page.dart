@@ -11,9 +11,41 @@ class StudyPage extends StatefulWidget {
   State<StudyPage> createState() => _StudyPageState();
 }
 
-class _StudyPageState extends State<StudyPage> {
+class _StudyPageState extends State<StudyPage>
+    with SingleTickerProviderStateMixin {
   int currentIndex = 0;
   bool showAnswer = false;
+
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void nextCard(int totalCards) {
     if (totalCards == 0) return;
@@ -22,6 +54,8 @@ class _StudyPageState extends State<StudyPage> {
       currentIndex = (currentIndex + 1) % totalCards;
       showAnswer = false;
     });
+
+    _controller.forward(from: 0.8);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -62,6 +96,8 @@ class _StudyPageState extends State<StudyPage> {
     setState(() {
       showAnswer = !showAnswer;
     });
+
+    _controller.forward(from: 0.8);
   }
 
   void goBack() {
@@ -101,54 +137,57 @@ class _StudyPageState extends State<StudyPage> {
 
                   const SizedBox(height: 25),
 
-                  GestureDetector(
-                    onTap: flipCard,
-                    child: Card(
-                      elevation: 5,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(30),
-                        child: Column(
-                          children: [
-                            Icon(
-                              showAnswer
-                                  ? Icons.lightbulb
-                                  : Icons.quiz,
-                              size: 40,
-                              color: Colors.indigo,
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            Text(
-                              showAnswer ? 'Answer' : 'Question',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                  ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: GestureDetector(
+                      onTap: flipCard,
+                      child: Card(
+                        elevation: 5,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(30),
+                          child: Column(
+                            children: [
+                              Icon(
+                                showAnswer
+                                    ? Icons.lightbulb
+                                    : Icons.quiz,
+                                size: 40,
                                 color: Colors.indigo,
                               ),
-                            ),
 
-                            const Divider(height: 25),
+                              const SizedBox(height: 15),
 
-                            Text(
-                              showAnswer
-                                  ? cards[currentIndex].answer
-                                  : cards[currentIndex].question,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 22),
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            const Text(
-                              'Tap card to flip',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                              Text(
+                                showAnswer ? 'Answer' : 'Question',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.indigo,
+                                ),
                               ),
-                            ),
-                          ],
+
+                              const Divider(height: 25),
+
+                              Text(
+                                showAnswer
+                                    ? cards[currentIndex].answer
+                                    : cards[currentIndex].question,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 22),
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              const Text(
+                                'Tap card to flip',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
