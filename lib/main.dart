@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'providers/flashcard_provider.dart';
 import 'add_card_page.dart';
 import 'study_page.dart';
+import 'resources_page.dart';
 import 'widgets/progress_card.dart';
 import 'utils/app_theme.dart';
 
@@ -29,7 +30,6 @@ class StudyCardApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'StudyCard',
 
-          // Light and dark themes
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: currentTheme,
@@ -39,6 +39,7 @@ class StudyCardApp extends StatelessWidget {
             '/': (context) => const HomePage(),
             '/add-card': (context) => const AddCardPage(),
             '/study': (context) => const StudyPage(),
+            '/resources': (context) => const ResourcesPage(),
           },
         );
       },
@@ -107,8 +108,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('StudyCard'),
-
-        // Theme switching button
         actions: [
           IconButton(
             tooltip: AppTheme.themeMode.value == ThemeMode.light
@@ -213,6 +212,17 @@ class HomePage extends StatelessWidget {
                       openStudyPage(context, totalCards),
                   icon: const Icon(Icons.school),
                   label: const Text('Study Now'),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Study Resources button
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/resources');
+                  },
+                  icon: const Icon(Icons.library_books),
+                  label: const Text('Study Resources'),
                 ),
               ],
             ),
