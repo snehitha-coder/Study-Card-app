@@ -141,11 +141,30 @@ class _StudyPageState extends State<StudyPage>
                     scale: _scaleAnimation,
                     child: GestureDetector(
                       onTap: flipCard,
-                      child: Card(
-                        elevation: 5,
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(30),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                        decoration: BoxDecoration(
+                          color: showAnswer
+                              ? Colors.deepPurple.shade100
+                              : Theme.of(context).cardTheme.color ??
+                                  Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(
+                            showAnswer ? 25 : 12,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(30),
+                        width: double.infinity,
+                        child: AnimatedOpacity(
+                          opacity: showAnswer ? 1.0 : 0.7,
+                          duration: const Duration(milliseconds: 300),
                           child: Column(
                             children: [
                               Icon(
