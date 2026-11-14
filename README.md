@@ -1,210 +1,395 @@
-# Study Card App
+# Study Card App – Flutter
 
-A Flutter-based study and flashcard application designed to help students
-create, manage, and revise study cards.
+## Project Overview
 
-## Development Progress
+The **Study Card App** is a Flutter-based application that helps students create, organize, and study flashcards. It provides a simple interface for adding questions and answers, tracking study progress, and accessing learning resources through a REST API.
 
-### Commit 1 — Initial Flutter Project Setup
+## Technologies Used
 
-**Commit message:** `Initial Flutter project setup`
+- Flutter
+- Dart
+- Provider – State Management
+- REST API
+- JSON
+- HTTP package
+- Visual Studio Code
+- Chrome
 
-**Description:**  
-Created the Flutter project and initialized the basic project structure
-required for developing the Study Card application.
+## Project Structure
 
----
-
-### Commit 2 — Create Study Card Home Screen
-
-**Commit message:** `Create study card home screen`
-
-**Description:**  
-Designed the initial home screen of the Study Card application. The screen
-contains the application title, study introduction, progress section, and
-buttons for creating cards and starting a study session.
-
-#### Screenshot
-
-![Study Card Home Screen](screenshots/commit-2.jpg)
-
-**Screenshot explanation:**  
-This screenshot shows the initial Study Card home screen developed in
-Commit 2. It displays the study introduction, current progress information,
-and the main actions available to the user: Create Card and Study Now.
-
----
-
-### Commit 3 — Add Flashcard Data Model
-
-**Commit message:** `Add flashcard data model`
-
-**Description:**  
-Created a Flashcard data model containing question and answer fields.
-Sample flashcards were added to demonstrate how flashcard data is
-represented and displayed in the application.
-
-#### Screenshot
-
-![Flashcard Data Model](screenshots/commit-3.jpg)
-
-**Screenshot explanation:**  
-This screenshot shows the Study Card home screen after introducing
-the Flashcard data model. The application displays the number of
-available flashcards.
+```text
+Studycardapp/
+├── lib/
+│   ├── models/
+│   │   ├── flashcard.dart
+│   │   └── study_resource.dart
+│   ├── providers/
+│   │   └── flashcard_provider.dart
+│   ├── utils/
+│   │   ├── flashcard_utils.dart
+│   │   ├── app_theme.dart
+│   │   └── api_service.dart
+│   ├── widgets/
+│   │   └── progress_card.dart
+│   ├── add_card_page.dart
+│   ├── main.dart
+│   ├── study_page.dart
+│   └── resources_page.dart
+├── test/
+│   ├── flashcard_provider_test.dart
+│   ├── widget_test.dart
+│   └── widget_interaction_test.dart
+├── pubspec.yaml
+└── README.md
+```
 
 ---
 
-### Commit 4 — Implement Flashcard Creation
+# EXPERIMENT 1: Flutter Setup, Dart Utilities and Data Model
 
-**Commit message:** `Implement flashcard creation`
+### Aim
 
-**Description:**  
-Implemented the flashcard creation feature in the Study Card application.
-Users can now enter a question and answer and save the flashcard.
+To set up a Flutter application and understand Dart programming concepts by creating utility functions and data models.
 
-A separate Create Flashcard screen was added with input fields for:
+### Concepts Implemented
 
-- Question
-- Answer
-- Save Card button
+- Flutter project creation and configuration.
+- Dart classes and objects.
+- Flashcard data model.
+- Dart utility functions.
+- Constructors and object-oriented programming.
 
-After saving a flashcard, the user is returned to the home screen and
-the flashcard count is updated.
+### Implementation
 
-#### Screenshot
+Created the initial Flutter project and defined a Flashcard model containing question and answer fields. Utility functions were implemented to support flashcard operations.
 
-![Create Flashcard Screen](screenshots/commit-4.2.jpg)
+### Screenshots
 
-**Screenshot explanation:**  
-This screenshot shows the Create Flashcard screen of the Study Card
-application. The user can enter a question and its corresponding answer
-and save the new flashcard using the Save Card button.
+_Add your Experiment 1 screenshots here._
+
+![Experiment 1](screenshots/1.jpg)
 
 ---
 
----
+# EXPERIMENT 2: Home Screen UI and Flutter Layout Widgets
 
-### Commit 5 — Implement Flashcard Study Mode
+### Aim
 
-**Commit message:** `Implement flashcard study mode`
+To design the Study Card application home screen using Flutter widgets and layout structures.
 
-**Description:**  
-Implemented a Study Mode feature for the Study Card application.
+### Concepts Implemented
 
-Users can now:
+- Material Design widgets.
+- Row and Column.
+- Container and Card.
+- Text and buttons.
+- Layout management.
+- Visual elements and UI organization.
 
-- View the current flashcard question
-- Tap the flashcard to reveal the answer
-- Move to the next flashcard
-- See the current flashcard number
+### Implementation
 
-The Study Now button on the home screen opens the Study Mode screen.
+Designed the home dashboard with options to create flashcards, start studying, and access study resources. Used reusable Flutter widgets to organize the interface.
 
-#### Screenshot
+### Screenshots
 
-![Study Mode](screenshots/commit-5.1.jpg)
-![Study Mode](screenshots/commit-5.2.jpg)
+_Add your Experiment 2 screenshots here._
 
-**Screenshot explanation:**  
-This screenshot shows the Study Mode screen of the Study Card application.
-The current flashcard question is displayed along with the card number.
-The user can tap the card to reveal the answer and use the Next Card button
-to continue studying.
+![Experiment 2](screenshots/commit-2.jpg)
 
 ---
 
-### Commit 6 — Add Dart Utility Functions
+# EXPERIMENT 3: Responsive and Adaptive UI Design
 
-**Commit message:** `Add Dart utility functions`
+### Aim
 
-**Description:**
+To implement responsive and adaptive layouts that work across different screen sizes.
 
-Implemented reusable Dart utility functions to calculate flashcard statistics and study progress.
+### Concepts Implemented
 
-Features:
+- Responsive dashboard.
+- MediaQuery.
+- Adaptive screen configurations.
+- Dynamic layout adjustments.
+- Flexible UI components.
 
-- Calculate total flashcards.
-- Track the number of studied flashcards.
-- Calculate study progress percentage.
-- Generate progress messages using conditional statements.
-- Display a dynamic progress bar on the home screen.
+### Implementation
 
-**Dart Concepts Used:**
+Improved the dashboard layout to adjust to different screen dimensions and provide a consistent user experience.
 
-- Functions and static methods
-- Conditional statements
-- Lists and Sets
-- Return values
+### Screenshots
 
-#### Screenshot
+_Add your Experiment 3 screenshots here._
 
-![Study Progress](screenshots/commit-6.jpg)
+![Experiment 3](screenshots/commit-3.jpg)
 
 ---
 
-### Commit 7 — Create Reusable Study Card Widgets
+# EXPERIMENT 4: Navigation and Named Routes
 
-**Commit message:** `Create reusable study card widgets`
+### Aim
 
-**Description:**
+To implement navigation between different screens using Flutter navigation techniques.
 
-Created a custom reusable Flutter widget to display flashcard study progress. Extracted the progress UI from `main.dart` into a separate widget to improve code organization and reusability.
+### Concepts Implemented
 
-**Features:**
+- Navigator.
+- Navigator.push and Navigator.pop.
+- Named routes.
+- Route configuration.
+- Screen transitions.
 
-- Created a reusable `ProgressCard` widget.
-- Displays the total number of flashcards.
-- Shows the number of studied cards.
-- Displays a dynamic progress bar.
-- Shows study progress as a percentage.
-- Displays progress messages based on study activity.
+### Implementation
 
-**Dart and Flutter Concepts Used:**
+Created separate screens for the home dashboard, flashcard creation, study mode, and study resources. Configured named routes for navigation between screens.
 
-- Custom widgets
-- StatelessWidget
-- Constructor parameters
-- Required properties
-- Widget reusability
-- Component-based UI design
+### Screenshots
 
-**Files Created:**
+_Add your Experiment 4 screenshots here._
 
-- `lib/widgets/progress_card.dart`
-
-**Files Modified:**
-
-- `lib/main.dart`
+![Experiment 4](screenshots/commit-4.2.jpg)
 
 ---
 
+# EXPERIMENT 5: State Management Using Provider
+
+### Aim
+
+To manage application state using the Provider package and ChangeNotifier.
+
+### Concepts Implemented
+
+- Provider package.
+- ChangeNotifier.
+- ChangeNotifierProvider.
+- Consumer and context.watch.
+- Shared application state.
+- Progress tracking.
+
+### Implementation
+
+Implemented FlashcardProvider to manage flashcard data. The provider supports adding cards, marking cards as studied, and tracking total, completed, and remaining cards.
+
+### Screenshots
+
+_Add your Experiment 5 screenshots here._
+
+![Experiment 5](screenshots/commit-5.1.jpg)
+
 ---
 
-### Commit 8 — Improve Layouts Using Flutter Widgets
+# EXPERIMENT 6: Reusable Widgets and Application Themes
 
-**Commit message:** `Improve layouts using Flutter widgets`
+### Aim
 
-**Description:**
+To create reusable widgets and implement centralized application styling with light and dark themes.
 
-Improved the Study Card dashboard layout using Flutter's basic layout widgets.
+### Concepts Implemented
 
-**Features:**
+- Custom reusable widgets.
+- Widget composition.
+- ThemeData.
+- Centralized styling.
+- Light theme.
+- Dark theme.
+- Theme switching.
 
-- Used Row to arrange the dashboard heading and school icon horizontally.
-- Used Column to organize screen elements vertically.
-- Used Stack to overlay an icon on the progress card.
-- Used Positioned to control the icon's placement.
-- Used Expanded to manage available horizontal space.
+### Implementation
 
-**Flutter Concepts Used:**
+Created a reusable progress card widget and centralized application styling. Implemented light and dark modes with a theme toggle.
 
-- Row
-- Column
-- Stack
-- Positioned
-- Expanded
+### Screenshots
 
-#### Screenshot
+_Add your Experiment 6 screenshots here._
 
-![!!](screenshots/commit-8.jpg)
+![Experiment 6](screenshots/commit20.jpg)
+
+---
+
+# EXPERIMENT 7: Flashcard Creation, Form Validation and Error Handling
+
+### Aim
+
+To implement form-based flashcard creation with validation and user feedback.
+
+### Concepts Implemented
+
+- TextFormField.
+- TextEditingController.
+- Form and GlobalKey.
+- Form validation.
+- Error handling.
+- SnackBar notifications.
+- User feedback.
+
+### Implementation
+
+Created a form to accept flashcard questions and answers. Added validation to prevent empty submissions and provided feedback to users after operations.
+
+### Screenshots
+
+_Add your Experiment 7 screenshots here._
+
+![Experiment 7](screenshots/commit21.jpg)
+
+---
+
+# EXPERIMENT 8: Explicit and Implicit Animations
+
+### Aim
+
+To implement animations in Flutter using explicit and implicit animation techniques.
+
+### Concepts Implemented
+
+- AnimationController.
+- Tween.
+- SingleTickerProviderStateMixin.
+- ScaleTransition.
+- AnimatedContainer.
+- AnimatedOpacity.
+
+### Implementation
+
+Added animations to the flashcard study interface. Explicit animations were implemented using AnimationController and ScaleTransition, while implicit animations were implemented using AnimatedContainer and AnimatedOpacity.
+
+### Screenshots
+
+_Add your Experiment 8 screenshots here._
+
+![Experiment 8](screenshots/commit25.jpg)
+
+---
+
+# EXPERIMENT 9: REST API Integration, JSON Parsing and ListView
+
+### Aim
+
+To fetch data from a REST API, parse JSON responses, and display the retrieved information using Flutter ListView widgets.
+
+### Concepts Implemented
+
+- REST API integration.
+- HTTP GET request.
+- JSON decoding.
+- Model-based JSON parsing.
+- Future and asynchronous programming.
+- FutureBuilder.
+- ListView.builder.
+- Loading and error states.
+
+### Implementation
+
+Integrated the JSONPlaceholder REST API to retrieve study resource data. Parsed the JSON response into StudyResource objects and displayed the records using ListView.builder.
+
+**API Used:** https://jsonplaceholder.typicode.com/posts
+
+### Screenshots
+
+_Add your Experiment 9 screenshots here._
+
+![Experiment 9](screenshots/commit27.jpg)
+
+---
+
+# EXPERIMENT 10: Unit Testing, Widget Testing and Debugging
+
+### Aim
+
+To test application functionality using Flutter testing tools and perform final debugging.
+
+### Concepts Implemented
+
+- Unit testing.
+- Widget testing.
+- Widget interaction testing.
+- Test cases and assertions.
+- Flutter debugging.
+- Application verification.
+
+### Implementation
+
+Created unit tests for flashcard provider operations, including adding cards, marking cards as studied, and progress calculation.
+
+Created widget tests to verify application loading, flashcard form navigation, and text input functionality.
+
+### Test Results
+
+- Unit and widget tests: **9 tests passed**
+- Flutter analysis: No errors reported; 5 informational suggestions.
+- Manual application testing: Completed.
+
+### Screenshots
+
+_Add your Experiment 10 screenshots here._
+
+![Experiment 10](screenshots/test1.jpg)
+
+---
+
+## How to Run the Project
+
+### Prerequisites
+
+- Flutter SDK
+- Dart SDK
+- Visual Studio Code or Android Studio
+- Chrome browser
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/snehitha-coder/Study-Card-app.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd Study-Card-app
+```
+
+Install dependencies:
+
+```bash
+flutter pub get
+```
+
+Run the application:
+
+```bash
+flutter run -d chrome
+```
+
+Run tests:
+
+```bash
+flutter test
+```
+
+Build the web application:
+
+```bash
+flutter build web
+```
+
+## Application Features
+
+1. Create and manage flashcards.
+2. Study questions and answers.
+3. Track study progress.
+4. Responsive dashboard.
+5. Light and dark themes.
+6. Form validation and error handling.
+7. Animated user interface.
+8. REST API integration.
+9. JSON data parsing.
+10. Study resources displayed using ListView.
+
+## Conclusion
+
+The Study Card App demonstrates the practical implementation of Flutter and Dart concepts through ten experiments. It covers UI development, responsive layouts, navigation, state management, themes, animations, REST API integration, JSON parsing, and software testing.
+
+## GitHub Repository
+
+[Study Card App – GitHub](https://github.com/snehitha-coder/Study-Card-app)
